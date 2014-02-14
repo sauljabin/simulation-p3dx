@@ -1,4 +1,4 @@
-package app;
+package simulation.app;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

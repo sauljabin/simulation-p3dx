@@ -1,8 +1,8 @@
-package app;
+package simulation.app;
 
-import robotica.Client;
-import robotica.architecture.Reactive;
-import robotica.interfaces.Architecture;
+import simulation.architecture.Reactive;
+import simulation.connection.Client;
+import simulation.interfaces.Architecture;
 
 public class Main {
 

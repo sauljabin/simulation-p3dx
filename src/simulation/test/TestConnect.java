@@ -1,10 +1,10 @@
-package test;
+package simulation.test;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import app.Config;
-import app.LoadLibrary;
+import simulation.app.Config;
+import simulation.app.LoadLibrary;
 import coppelia.IntW;
 import coppelia.IntWA;
 import coppelia.remoteApi;

@@ -1,8 +1,8 @@
-package robotica;
+package simulation.connection;
 
-import app.Log;
-import app.Main;
-import robotica.interfaces.Architecture;
+import simulation.app.Log;
+import simulation.app.Main;
+import simulation.interfaces.Architecture;
 import coppelia.remoteApi;
 
 public class Client extends Thread {
@@ -54,21 +54,21 @@ public class Client extends Thread {
 
 	public Client(String host, int port, Architecture architecture) {
 		vrep = new remoteApi();
-		clientId = vrep.simxStart(host, 19999, true, true, 5000, 5);
+		clientId = vrep.simxStart(host, port, true, true, 5000, 5);
 		this.architecture = architecture;
 	}
 
 	@Override
 	public void run() {
 		while (vrep.simxGetConnectionId(clientId) != -1) {
-			architecture.simulate(clientId);
+			architecture.simulate(vrep, clientId);
 		}
 		vrep.simxFinish(clientId);
 	}
 
 	@Override
 	public synchronized void start() {
-		Log.info(Main.class, "Iniciando cliente arquitectura: "+architecture.getClass().getName());
+		Log.info(Main.class, "Iniciando cliente arquitectura: " + architecture.getClass().getName());
 		super.start();
 	}
 
