@@ -1,6 +1,6 @@
-package test;
+package simulation.test;
 
-import app.Log;
+import simulation.app.Log;
 
 public class TestLog {
 	public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package util;
+package simulation.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

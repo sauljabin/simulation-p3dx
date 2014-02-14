@@ -1,9 +1,9 @@
-package test;
+package simulation.test;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import app.Config;
+import simulation.app.Config;
 
 public class TestConfig {
 
