@@ -5,7 +5,6 @@ import java.io.IOException;
 
 import simulation.app.Config;
 import simulation.app.LoadLibrary;
-import coppelia.IntW;
 import coppelia.IntWA;
 import coppelia.remoteApi;
 
@@ -20,8 +19,8 @@ public class TestConnect {
 		if (clientID != -1) {
 			System.out.println("Connected to remote API server");
 			IntWA objectHandles = new IntWA(1);
-			int ret = vrep.simxGetObjects(clientID, vrep.sim_handle_all, objectHandles, vrep.simx_opmode_oneshot_wait);
-			if (ret == vrep.simx_error_noerror)
+			int ret = vrep.simxGetObjects(clientID, remoteApi.sim_handle_all, objectHandles, remoteApi.simx_opmode_oneshot_wait);
+			if (ret == remoteApi.simx_error_noerror)
 				System.out.format("Number of objects in the scene: %d\n", objectHandles.getArray().length);
 			else
 				System.out.format("Remote API function call returned with error code: %d\n", ret);
@@ -39,7 +38,6 @@ public class TestConnect {
 		Config.load();
 		LoadLibrary.load();
 		test2();
-		
-		
+
 	}
 }
