@@ -1,7 +1,6 @@
 package simulation.connection;
 
 import simulation.app.Log;
-import simulation.app.Main;
 import simulation.interfaces.Architecture;
 import coppelia.remoteApi;
 
@@ -54,7 +53,9 @@ public class Client extends Thread {
 
 	public Client(String host, int port, Architecture architecture) {
 		vrep = new remoteApi();
+		vrep.simxFinish(-1);
 		clientId = vrep.simxStart(host, port, true, true, 5000, 5);
+		Log.info(Client.class, "Conexion exitosa: " + architecture.getClass().getName());
 		this.architecture = architecture;
 	}
 
@@ -68,7 +69,7 @@ public class Client extends Thread {
 
 	@Override
 	public synchronized void start() {
-		Log.info(Main.class, "Iniciando cliente arquitectura: " + architecture.getClass().getName());
+		Log.info(Client.class, "Iniciando cliente arquitectura: " + architecture.getClass().getName());
 		super.start();
 	}
 
