@@ -69,7 +69,6 @@ public class Log {
 
 	public static void info(Class<?> clazz, String msg, remoteApi vrep, int clientId) {
 		print("INFO", clazz, msg, null, vrep, clientId);
-
 	}
 
 	public static void info(Class<?> clazz, String msg, Exception e, remoteApi vrep, int clientId) {
@@ -78,7 +77,6 @@ public class Log {
 
 	public static void error(Class<?> clazz, String msg, remoteApi vrep, int clientId) {
 		print("ERRO", clazz, msg, null, vrep, clientId);
-
 	}
 
 	public static void error(Class<?> clazz, String msg, Exception e, remoteApi vrep, int clientId) {

@@ -14,7 +14,7 @@ public class TestConnect {
 
 		System.out.println("Program started");
 		remoteApi vrep = new remoteApi();
-		vrep.simxFinish(-1); // just in case, close all opened connections
+		vrep.simxFinish(-1);
 		int clientID = vrep.simxStart("127.0.0.1", 19999, true, true, 5000, 5);
 		if (clientID != -1) {
 			System.out.println("Connected to remote API server");
