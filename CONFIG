@@ -1,0 +1,12 @@
+#CONFIG
+#Fri Feb 14 13:34:38 VET 2014
+ARCH=x86
+APP_NAME=SimulationP3DX
+OS=Windows 7
+LIB_PATH=lib/
+LIB_PATH_32=lib/32Bit/
+LIB_PATH_64=lib/64Bit/
+LIB_LINUX=libremoteApiJava
+LIB_WINDOWS=remoteApiJava
+HOST_SERVER=127.0.0.1
+HOST_PORT=19999
