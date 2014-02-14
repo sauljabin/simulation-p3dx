@@ -1,5 +1,7 @@
 package simulation.interfaces;
 
-public interface Behavior {
+import coppelia.remoteApi;
 
+public interface Behavior {
+	public void run(remoteApi vrep, int clientId);
 }
