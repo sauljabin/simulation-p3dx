@@ -12,7 +12,7 @@ import simulation.util.UtilDate;
 public class Log {
 
 	private static void print(String type, Class<?> clazz, String msg, Exception e, remoteApi vrep, int clientId) {
-		String string = String.format("%s:\t%s\nTIME:\t%s\n---->\t%s\n", type, clazz.getName(), UtilDate.nowFormat("yyyy-MM-dd HH:mm"), msg);
+		String string = String.format("%s: %s\nTIME: %s\n----> %s\n", type, clazz.getName(), UtilDate.nowFormat("yyyy-MM-dd HH:mm"), msg);
 		System.out.print(string);
 		if (e != null)
 			e.printStackTrace(System.out);
@@ -85,7 +85,6 @@ public class Log {
 
 	public static void warning(Class<?> clazz, String msg, remoteApi vrep, int clientId) {
 		print("WARN", clazz, msg, null, vrep, clientId);
-
 	}
 
 	public static void warning(Class<?> clazz, String msg, Exception e, remoteApi vrep, int clientId) {
