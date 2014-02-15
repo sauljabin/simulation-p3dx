@@ -1,1 +1,4 @@
-simExtRemoteApiStart(19999)
+local portNb = 20000
+if (simExtRemoteApiStatus(portNb) == -1) then
+	simExtRemoteApiStart(portNb)
+end

@@ -55,7 +55,7 @@ public class Client extends Thread {
 		vrep = new remoteApi();
 		vrep.simxFinish(-1);
 		clientId = vrep.simxStart(host, port, true, true, 5000, 5);
-		Log.info(Client.class, "Conexion exitosa: " + architecture.getClass().getName());
+		Log.info(Client.class, "Conexion exitosa: " + architecture.getClass().getName(), vrep, clientId);
 		this.architecture = architecture;
 	}
 
@@ -69,7 +69,7 @@ public class Client extends Thread {
 
 	@Override
 	public synchronized void start() {
-		Log.info(Client.class, "Iniciando cliente arquitectura: " + architecture.getClass().getName());
+		Log.info(Client.class, "Iniciando cliente, arquitectura: " + architecture.getClass().getName(), vrep, clientId);
 		super.start();
 	}
 
