@@ -1,26 +1,26 @@
-package simulation.app;
+package app;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 
-public class LoadLibrary {
+public class Library {
 
 	public static void load() throws FileNotFoundException {
 
 		String path = "";
 		String extension = "";
 
-		if (LoadLibrary.is32Bit())
+		if (Library.is32Bit())
 			path = Config.get("LIB_PATH_32");
 
-		if (LoadLibrary.is64Bit())
+		if (Library.is64Bit())
 			path = Config.get("LIB_PATH_64");
 
-		if (LoadLibrary.isLinux()) {
+		if (Library.isLinux()) {
 			path += Config.get("LIB_LINUX");
 			extension += ".so";
 		}
-		if (LoadLibrary.isWindows()) {
+		if (Library.isWindows()) {
 			path += Config.get("LIB_WINDOWS");
 			extension += ".dll";
 		}
@@ -41,11 +41,11 @@ public class LoadLibrary {
 	}
 
 	public static boolean is32Bit() {
-		return Config.get("ARCH").toLowerCase().contains("x86");
+		return Config.get("OS_ARCH").toLowerCase().contains("x86");
 	}
 
 	public static boolean is64Bit() {
-		return Config.get("ARCH").toLowerCase().contains("x64");
+		return Config.get("OS_ARCH").toLowerCase().contains("x64");
 	}
 
 }

@@ -1,22 +1,21 @@
 package simulation.behavior;
 
-import coppelia.IntW;
-import coppelia.remoteApi;
+import app.vrep.Robot;
 import simulation.interfaces.Behavior;
-import simulation.interfaces.Const;
 
 public class Move implements Behavior {
 
+	private Robot robot;
+
 	@Override
-	public void run(remoteApi vrep, int clientId) {
-		IntW leftMotor = new IntW(0);
-		IntW rightMotor = new IntW(0);
-		vrep.simxGetObjectHandle(clientId, "p3_leftJoint_", leftMotor, remoteApi.simx_opmode_oneshot);
-		vrep.simxGetObjectHandle(clientId, "p3_rightJoint_", rightMotor, remoteApi.simx_opmode_oneshot);
+	public void simulate() {
+		robot.setMotorLeftSpeed(Robot.maxSpeed);
+		robot.setMotorRightSpeed(Robot.backMaxSpeed);
+	}
 
-		vrep.simxSetJointTargetVelocity(clientId, leftMotor.getValue(), Const.lowSpeed, remoteApi.simx_opmode_oneshot);
-		vrep.simxSetJointTargetVelocity(clientId, rightMotor.getValue(), Const.lowSpeed, remoteApi.simx_opmode_oneshot);
-
+	@Override
+	public void init() {
+		robot = new Robot();
 	}
 
 }
