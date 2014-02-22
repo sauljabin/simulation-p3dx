@@ -2,5 +2,11 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="lib" path="lib/jar/miglayout-4.0-swing.jar"/>
+	<classpathentry kind="lib" path="lib/jar/substance-4.3.jar"/>
+	<classpathentry kind="lib" path="lib/jar/guava-15.0.jar"/>
+	<classpathentry kind="lib" path="lib/jar/javassist.jar"/>
+	<classpathentry kind="lib" path="lib/jar/jcommon-1.0.17.jar"/>
+	<classpathentry kind="lib" path="lib/jar/reflections-0.9.9-RC1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

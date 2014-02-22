@@ -12,8 +12,21 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-2014 - SAUL PIÑA SAULJP07@GMAIL.COM
-2014 - JORGE PARRA THEJORGEMYLIO@GMAIL.COM
+Año:
+	2014
+	
+Autores:
+	SAUL PIÑA - SAULJP07@GMAIL.COM
+	JORGE PARRA - THEJORGEMYLIO@GMAIL.COM
 
-Descripción: Simulación de robot Pioneer P3-DX 
-Simulador: VREP http://www.coppeliarobotics.com/
+Descripción: 
+	Simulación de robot Pioneer P3-DX 
+	
+Simulador: 
+	VREP http://www.coppeliarobotics.com/
+
+Comandos de la aplicación:
+     -help	Muestra la ayuda
+  -console	Ejecuta la aplicación en modo consola
+      -gui	Ejecuta la aplicación en modo gráfico
+          	Correr sin parámetros ejecuta la aplicación en modo gráfico

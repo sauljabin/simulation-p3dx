@@ -1,4 +1,12 @@
-local portNb = 20000
-if (simExtRemoteApiStatus(portNb) == -1) then
-	simExtRemoteApiStart(portNb)
+if (simGetScriptExecutionCount()==0) then
+	local portNb = 20000
+	if (simExtRemoteApiStatus(portNb) == -1) then
+		simExtRemoteApiStart(portNb)
+	end
+end
+
+simHandleChildScript(sim_handle_all_except_explicit)
+
+if (simGetSimulationState()==sim_simulation_advancing_lastbeforestop) then
+	--END
 end
