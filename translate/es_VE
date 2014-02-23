@@ -42,3 +42,4 @@ INFO_SUCCESSFULCONN=Conexión exitosa
 INFO_UNSUCCESSFULCONN=Conexión no exitosa
 INFO_CLOSECONN=Conexión cerrada
 INFO_INITSIMULATION=Simulación iniciada
+INFO_STOPSIMULATION=Simulación detenida
