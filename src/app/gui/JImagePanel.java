@@ -91,7 +91,7 @@ public class JImagePanel extends JPanel implements Serializable {
 	@Override
 	public void paintComponent(Graphics g) {
 		if (image != null)
-			g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+			g.drawImage(image, 11, 16, getWidth()-22, getHeight()-22, null);
 		setOpaque(false);
 		super.paintComponent(g);
 	}

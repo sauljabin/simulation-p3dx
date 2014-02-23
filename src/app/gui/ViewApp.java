@@ -160,8 +160,8 @@ public class ViewApp extends JFrame {
 		pnlSimulation.add(cmbArch, "width 50%, wrap 10");
 		pnlSimulation.add(btnStarSimulation, "grow, height 25");
 		pnlSimulation.add(btnStopSimulation, "grow, height 25, wrap");
-		
-		pnlCam=new JImagePanel();
+
+		pnlCam = new JImagePanel();
 		pnlCam.setLayout(new MigLayout());
 		pnlCam.setBorder(BorderFactory.createTitledBorder(Translate.get("GUI_CAM")));
 		pnlCam.setImagePath("img/logo200x200.png");
@@ -270,6 +270,10 @@ public class ViewApp extends JFrame {
 
 	public JComboBox<ClassW> getCmbArch() {
 		return cmbArch;
+	}
+
+	public JImagePanel getPnlCam() {
+		return pnlCam;
 	}
 
 }

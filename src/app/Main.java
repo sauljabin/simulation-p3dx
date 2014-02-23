@@ -5,7 +5,6 @@ import java.util.Vector;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import org.jvnet.substance.SubstanceLookAndFeel;
@@ -109,11 +108,12 @@ public class Main {
 		JDialog.setDefaultLookAndFeelDecorated(true);
 		SubstanceLookAndFeel.setSkin(new BusinessBlueSteelSkin());
 		UIManager.put(SubstanceLookAndFeel.BUTTON_NO_MIN_SIZE_PROPERTY, Boolean.TRUE);
-		SwingUtilities.invokeLater(new Runnable() {
+		Thread thread = new Thread(new Runnable() {
 			public void run() {
 				new ControllerViewApp();
 			}
 		});
+		thread.start();
 	}
 
 }
