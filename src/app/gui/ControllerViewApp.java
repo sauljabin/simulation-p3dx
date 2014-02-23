@@ -1,3 +1,24 @@
+/**
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * 
+ *		SAUL PIÑA - SAULJP07@GMAIL.COM
+ *		JORGE PARRA - THEJORGEMYLIO@GMAIL.COM
+ *		2014
+ */
+
 package app.gui;
 
 import java.awt.Color;
@@ -9,30 +30,38 @@ import java.awt.image.BufferedImage;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import coppelia.CharWA;
 import coppelia.IntWA;
 import app.Config;
 import app.Log;
+import app.Main;
 import app.Translate;
 import app.com.ClassW;
 import app.util.UtilClass;
 import app.vrep.Client;
 import app.vrep.Robot;
+import simulation.Simulation;
 import simulation.interfaces.Architecture;
 
-public class ControllerViewApp extends WindowAdapter implements ActionListener {
+public class ControllerViewApp extends WindowAdapter implements ActionListener, ChangeListener {
 	private ViewApp viewApp;
 	private DefaultComboBoxModel<ClassW> modelCmbArch;
 	private Robot robot;
 	private IntWA resolution;
 	private CharWA pixels;
+	private Simulation simulation;
 
 	public ControllerViewApp() {
 		viewApp = new ViewApp();
 		viewApp.setController(this);
-		viewApp.getBtnDisconnect().setEnabled(false);
+		initState();
+
 		Log.setLogTextArea(viewApp.getTarConsole());
+
 		Vector<ClassW> architectures = UtilClass.getSubClass(Architecture.class);
 		modelCmbArch = new DefaultComboBoxModel<ClassW>(architectures);
 		viewApp.getCmbArch().setModel(modelCmbArch);
@@ -43,18 +72,130 @@ public class ControllerViewApp extends WindowAdapter implements ActionListener {
 		Object source = e.getSource();
 		if (source.equals(viewApp.getMenuItemClose()))
 			close();
-		if (source.equals(viewApp.getMenuItemAbout()))
+		else if (source.equals(viewApp.getMenuItemAbout()))
 			about();
-		if (source.equals(viewApp.getMenuItemShowConfig()))
+		else if (source.equals(viewApp.getMenuItemShowConfig()))
 			showConfig();
-		if (source.equals(viewApp.getBtnConnect()))
+		else if (source.equals(viewApp.getBtnConnect()))
 			connect();
-		if (source.equals(viewApp.getBtnDisconnect()))
+		else if (source.equals(viewApp.getBtnDisconnect()))
 			disconnect();
+		else if (source.equals(viewApp.getBtnStopSimulation()))
+			stopSimulation();
+		else if (source.equals(viewApp.getBtnStartSimulation()))
+			startSimulation();
+		else if (source.equals(viewApp.getBtnStop()))
+			stop();
+		else if (source.equals(viewApp.getBtnForward()))
+			forward();
+		else if (source.equals(viewApp.getBtnBackward()))
+			backward();
+		else if (source.equals(viewApp.getBtnRotateL()))
+			rotateL();
+		else if (source.equals(viewApp.getBtnRotateR()))
+			rotateR();
+	}
+
+	private void rotateR() {
+		viewApp.getSldMotorR().setValue(Robot.intStop);
+		robot.setMotorRightSpeed(Robot.intStop);
+
+		viewApp.getSldMotorL().setValue(Robot.intMeanSpeed);
+		robot.setMotorLeftSpeed(Robot.intMeanSpeed);
+	}
+
+	private void rotateL() {
+		viewApp.getSldMotorL().setValue(Robot.intStop);
+		robot.setMotorLeftSpeed(Robot.intStop);
+
+		viewApp.getSldMotorR().setValue(Robot.intMeanSpeed);
+		robot.setMotorRightSpeed(Robot.intMeanSpeed);
+	}
+
+	private void backward() {
+		viewApp.getSldMotorLR().setValue(Robot.intMeanSpeedBack);
+		viewApp.getSldMotorR().setValue(Robot.intMeanSpeedBack);
+		robot.setMotorRightSpeed(Robot.intMeanSpeedBack);
+
+		viewApp.getSldMotorL().setValue(Robot.intMeanSpeedBack);
+		robot.setMotorLeftSpeed(Robot.intMeanSpeedBack);
+	}
+
+	private void forward() {
+		viewApp.getSldMotorLR().setValue(Robot.intMeanSpeed);
+		viewApp.getSldMotorR().setValue(Robot.intMeanSpeed);
+		robot.setMotorRightSpeed(Robot.intMeanSpeed);
+
+		viewApp.getSldMotorL().setValue(Robot.intMeanSpeed);
+		robot.setMotorLeftSpeed(Robot.intMeanSpeed);
+	}
+
+	private void stop() {
+		viewApp.getSldMotorLR().setValue(Robot.intStop);
+		viewApp.getSldMotorR().setValue(Robot.intStop);
+		robot.setMotorRightSpeed(Robot.intStop);
+
+		viewApp.getSldMotorL().setValue(Robot.intStop);
+		robot.setMotorLeftSpeed(Robot.intStop);
+	}
+
+	public void startSimulation() {
+
+		Architecture arch = null;
+		try {
+			arch = (Architecture) ((ClassW) viewApp.getCmbArch().getSelectedItem()).getValue().newInstance();
+		} catch (Exception e) {
+			Log.error(Main.class, Translate.get("ERROR_NOARCHINSTANCE"), e);
+			e.printStackTrace();
+		}
+		if (Client.isConnect() && arch != null) {
+
+			viewApp.getBtnStopSimulation().setEnabled(true);
+			viewApp.getBtnStartSimulation().setEnabled(false);
+			viewApp.getCmbArch().setEnabled(false);
+
+			viewApp.getSldMotorL().setEnabled(false);
+			viewApp.getTxtMotorL().setEnabled(false);
+			viewApp.getSldMotorR().setEnabled(false);
+			viewApp.getTxtMotorR().setEnabled(false);
+			viewApp.getSldMotorLR().setEnabled(false);
+			viewApp.getTxtMotorLR().setEnabled(false);
+
+			viewApp.getBtnBackward().setEnabled(false);
+			viewApp.getBtnForward().setEnabled(false);
+			viewApp.getBtnRotateL().setEnabled(false);
+			viewApp.getBtnRotateR().setEnabled(false);
+			viewApp.getBtnStop().setEnabled(false);
+
+			simulation = new Simulation(arch);
+			simulation.start();
+		}
+	}
+
+	public void stopSimulation() {
+		if (simulation != null) {
+			simulation.stopSimulation();
+			stop();
+			viewApp.getBtnStopSimulation().setEnabled(false);
+			viewApp.getBtnStartSimulation().setEnabled(true);
+			viewApp.getCmbArch().setEnabled(true);
+
+			viewApp.getSldMotorL().setEnabled(true);
+			viewApp.getTxtMotorL().setEnabled(true);
+			viewApp.getSldMotorR().setEnabled(true);
+			viewApp.getTxtMotorR().setEnabled(true);
+			viewApp.getSldMotorLR().setEnabled(true);
+			viewApp.getTxtMotorLR().setEnabled(true);
+
+			viewApp.getBtnBackward().setEnabled(true);
+			viewApp.getBtnForward().setEnabled(true);
+			viewApp.getBtnRotateL().setEnabled(true);
+			viewApp.getBtnRotateR().setEnabled(true);
+			viewApp.getBtnStop().setEnabled(true);
+		}
 	}
 
 	public void connect() {
-
 		Integer port = viewApp.getTxtPort().getValue();
 		String host = viewApp.getTxtHost().getText();
 
@@ -65,15 +206,37 @@ public class ControllerViewApp extends WindowAdapter implements ActionListener {
 		} catch (Exception e) {
 			Log.error(ControllerViewApp.class, Translate.get("ERROR_NOSAVECONFIG"), e);
 		}
+
 		if (!Client.connect(host, port))
 			return;
 
+		viewApp.getChbCamera().setEnabled(false);
 		viewApp.getBtnDisconnect().setEnabled(true);
 		viewApp.getBtnConnect().setEnabled(false);
 		viewApp.getTxtPort().setEnabled(false);
 		viewApp.getTxtHost().setEnabled(false);
+		viewApp.getBtnStopSimulation().setEnabled(false);
+		viewApp.getBtnStartSimulation().setEnabled(true);
+		viewApp.getCmbArch().setEnabled(true);
 
-		robot = new Robot();
+		viewApp.getSldMotorL().setEnabled(true);
+		viewApp.getTxtMotorL().setEnabled(true);
+		viewApp.getSldMotorR().setEnabled(true);
+		viewApp.getTxtMotorR().setEnabled(true);
+		viewApp.getSldMotorLR().setEnabled(true);
+		viewApp.getTxtMotorLR().setEnabled(true);
+
+		viewApp.getBtnBackward().setEnabled(true);
+		viewApp.getBtnForward().setEnabled(true);
+		viewApp.getBtnRotateL().setEnabled(true);
+		viewApp.getBtnRotateR().setEnabled(true);
+		viewApp.getBtnStop().setEnabled(true);
+
+		robot = Client.getRobot();
+
+		if (!viewApp.getChbCamera().isSelected())
+			return;
+
 		resolution = new IntWA(0);
 		pixels = new CharWA(0);
 		robot.getCamImageStrimming(resolution, pixels);
@@ -104,11 +267,58 @@ public class ControllerViewApp extends WindowAdapter implements ActionListener {
 		thread.start();
 	}
 
-	public void disconnect() {
+	public void initState() {
+		viewApp.getPnlCam().setImagePath("img/logo200x200.png");
+		viewApp.getChbCamera().setEnabled(true);
 		viewApp.getBtnDisconnect().setEnabled(false);
+		viewApp.getBtnStopSimulation().setEnabled(false);
+		viewApp.getBtnStartSimulation().setEnabled(false);
 		viewApp.getBtnConnect().setEnabled(true);
 		viewApp.getTxtPort().setEnabled(true);
 		viewApp.getTxtHost().setEnabled(true);
+		viewApp.getTxtMotorL().setEditable(false);
+		viewApp.getTxtMotorR().setEditable(false);
+		viewApp.getTxtMotorLR().setEditable(false);
+		viewApp.getCmbArch().setEnabled(false);
+
+		viewApp.getSldMotorL().setEnabled(false);
+		viewApp.getTxtMotorL().setEnabled(false);
+		viewApp.getSldMotorR().setEnabled(false);
+		viewApp.getTxtMotorR().setEnabled(false);
+		viewApp.getSldMotorLR().setEnabled(false);
+		viewApp.getTxtMotorLR().setEnabled(false);
+
+		viewApp.getBtnBackward().setEnabled(false);
+		viewApp.getBtnForward().setEnabled(false);
+		viewApp.getBtnRotateL().setEnabled(false);
+		viewApp.getBtnRotateR().setEnabled(false);
+		viewApp.getBtnStop().setEnabled(false);
+
+		int maxValue = Robot.intMaxSpeed;
+		int minValue = Robot.intMaxSpeedBack;
+
+		viewApp.getSldMotorL().setMaximum(maxValue);
+		viewApp.getSldMotorL().setMinimum(minValue);
+		viewApp.getSldMotorL().setValue(0);
+
+		viewApp.getSldMotorR().setMaximum(maxValue);
+		viewApp.getSldMotorR().setMinimum(minValue);
+		viewApp.getSldMotorR().setValue(0);
+
+		viewApp.getSldMotorLR().setMaximum(maxValue);
+		viewApp.getSldMotorLR().setMinimum(minValue);
+		viewApp.getSldMotorLR().setValue(0);
+	}
+
+	public void disconnect() {
+		try {
+			stopSimulation();
+			stop();
+			Thread.sleep(10);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		initState();
 		Client.close();
 	}
 
@@ -123,23 +333,42 @@ public class ControllerViewApp extends WindowAdapter implements ActionListener {
 	}
 
 	public void about() {
-		Thread thread = new Thread(new Runnable() {
+		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				new ViewAbout();
 			}
 		});
-		thread.start();
 	}
 
 	public void showConfig() {
-		Thread thread = new Thread(new Runnable() {
+		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				new ViewConfig();
 			}
 		});
-		thread.start();
+	}
+
+	@Override
+	public void stateChanged(ChangeEvent e) {
+		Object source = e.getSource();
+		if (source.equals(viewApp.getSldMotorL())) {
+			int valueL = viewApp.getSldMotorL().getValue();
+			viewApp.getTxtMotorL().setText(String.valueOf(valueL));
+			if (robot != null)
+				robot.setMotorLeftSpeed(valueL);
+		} else if (source.equals(viewApp.getSldMotorR())) {
+			int valueR = viewApp.getSldMotorR().getValue();
+			viewApp.getTxtMotorR().setText(String.valueOf(valueR));
+			if (robot != null)
+				robot.setMotorRightSpeed(valueR);
+		} else if (source.equals(viewApp.getSldMotorLR())) {
+			viewApp.getTxtMotorLR().setText(String.valueOf(viewApp.getSldMotorLR().getValue()));
+			int value = viewApp.getSldMotorLR().getValue();
+			viewApp.getSldMotorR().setValue(value);
+			viewApp.getSldMotorL().setValue(value);
+		}
 	}
 
 }

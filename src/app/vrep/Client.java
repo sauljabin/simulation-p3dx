@@ -1,3 +1,24 @@
+/**
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * 
+ *		SAUL PIÑA - SAULJP07@GMAIL.COM
+ *		JORGE PARRA - THEJORGEMYLIO@GMAIL.COM
+ *		2014
+ */
+
 package app.vrep;
 
 import app.Log;
@@ -7,11 +28,12 @@ import coppelia.IntW;
 import coppelia.IntWA;
 import coppelia.remoteApi;
 
-public class Client extends Thread {
+public class Client {
 	private static int clientId;
 	private static remoteApi vrep;
 	private static String host;
 	private static int port;
+	private static Robot robot;
 
 	public int getClientId() {
 		return clientId;
@@ -33,10 +55,12 @@ public class Client extends Thread {
 		vrep = new remoteApi();
 		vrep.simxFinish(-1);
 		clientId = vrep.simxStart(host, port, true, true, 5000, 5);
-		if(clientId != -1)
-		Log.info(Client.class, Translate.get("INFO_SUCCESSFULCONN"));
-		else
+		if (clientId != -1) {
+			Log.info(Client.class, Translate.get("INFO_SUCCESSFULCONN"));
+			robot = new Robot();
+		} else {
 			Log.info(Client.class, Translate.get("INFO_UNSUCCESSFULCONN"));
+		}
 		return clientId != -1;
 	}
 
@@ -45,13 +69,15 @@ public class Client extends Thread {
 	}
 
 	public static void close() {
-		Log.info(Client.class, Translate.get("INFO_CLOSECONN"));
-		vrep.simxFinish(-1);
+		if (isConnect()) {
+			Log.info(Client.class, Translate.get("INFO_CLOSECONN"));
+			vrep.simxFinish(-1);
+		}
 	}
 
 	public static void statusBarMessage(String msg) {
 		if (isConnect())
-			vrep.simxAddStatusbarMessage(clientId, msg, remoteApi.simx_opmode_oneshot_wait);
+			vrep.simxAddStatusbarMessage(clientId, msg, remoteApi.simx_opmode_oneshot);
 	}
 
 	public static int getObject(String name) {
@@ -81,4 +107,9 @@ public class Client extends Thread {
 		int errorCode = vrep.simxGetVisionSensorImage(clientId, object, resolution, pixels, remoteApi.sim_object_camera_type, remoteApi.simx_opmode_buffer);
 		return errorCode == remoteApi.simx_error_noerror;
 	}
+
+	public static Robot getRobot() {
+		return robot;
+	}
+
 }

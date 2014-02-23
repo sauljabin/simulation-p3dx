@@ -13,7 +13,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *  
+ * 
+ *		SAUL PIÑA - SAULJP07@GMAIL.COM
+ *		JORGE PARRA - THEJORGEMYLIO@GMAIL.COM
+ *		2014
  */
 
 package app.gui;
@@ -24,14 +27,8 @@ import java.io.Serializable;
 
 import javax.swing.JTextField;
 
-/**
- * This panel block characters not numeric
- * 
- * @author Saul Pina - sauljp07@gmail.com
- */
 public class JIntegerField extends JTextField implements Serializable {
 
-	public static final String VERSION = "1.0.0";
 	private static final long serialVersionUID = -3669579723172144525L;
 
 	public JIntegerField() {

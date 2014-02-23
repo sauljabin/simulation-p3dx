@@ -1,3 +1,24 @@
+/**
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * 
+ *		SAUL PIÑA - SAULJP07@GMAIL.COM
+ *		JORGE PARRA - THEJORGEMYLIO@GMAIL.COM
+ *		2014
+ */
+
 package app.gui;
 
 import java.awt.BorderLayout;
@@ -6,6 +27,7 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -19,6 +41,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
+import javax.swing.text.DefaultCaret;
 
 import app.Config;
 import app.Translate;
@@ -32,6 +55,7 @@ public class ViewApp extends JFrame {
 	private ControllerViewApp controller;
 	private Vector<JMenuItem> menuItems;
 	private Vector<JButton> buttons;
+	private Vector<JSlider> sliders;
 	private JMenuBar menuBar;
 	private JMenu menuOptions;
 	private JMenuItem menuItemShowConfig;
@@ -53,7 +77,7 @@ public class ViewApp extends JFrame {
 	private JPanel pnlTeleoperation;
 	private JLabel lblArch;
 	private JComboBox<ClassW> cmbArch;
-	private JButton btnStarSimulation;
+	private JButton btnStartSimulation;
 	private JButton btnStopSimulation;
 	private JSlider sldMotorL;
 	private JSlider sldMotorR;
@@ -68,12 +92,16 @@ public class ViewApp extends JFrame {
 	private JTextField txtMotorL;
 	private JTextField txtMotorR;
 	private JTextField txtMotorLR;
-
 	private JImagePanel pnlCam;
+
+	private JLabel lblCamera;
+
+	private JCheckBox chbCamera;
 
 	public ViewApp() {
 		menuItems = new Vector<JMenuItem>();
 		buttons = new Vector<JButton>();
+		sliders = new Vector<JSlider>();
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		init();
 		setLocationRelativeTo(this);
@@ -87,10 +115,13 @@ public class ViewApp extends JFrame {
 	public void setController(ControllerViewApp controller) {
 		this.controller = controller;
 		for (int i = 0; i < menuItems.size(); i++) {
-			menuItems.elementAt(i).addActionListener(controller);
+			menuItems.get(i).addActionListener(controller);
 		}
 		for (int i = 0; i < buttons.size(); i++) {
-			buttons.elementAt(i).addActionListener(controller);
+			buttons.get(i).addActionListener(controller);
+		}
+		for (int i = 0; i < sliders.size(); i++) {
+			sliders.get(i).addChangeListener(controller);
 		}
 		this.addWindowListener(controller);
 	}
@@ -118,29 +149,27 @@ public class ViewApp extends JFrame {
 		menuItemAbout = new JMenuItem(Translate.get("GUI_ABOUT"));
 		menuHelp.add(menuItemAbout);
 
-		menuItems.add(menuItemShowConfig);
-		menuItems.add(menuItemClose);
-		menuItems.add(menuItemAbout);
-
 		pnlConnection = new JPanel();
 		pnlConnection.setLayout(new MigLayout());
 		pnlConnection.setBorder(BorderFactory.createTitledBorder(Translate.get("GUI_CONNECTION")));
 
 		lblHost = new JLabel(Translate.get("GUI_HOST"));
 		lblPort = new JLabel(Translate.get("GUI_PORT"));
-
+		lblCamera=new JLabel(Translate.get("GUI_CAM"));
+		
 		txtHost = new JTextField(Config.get("HOST_SERVER"));
 		txtPort = new JIntegerField(new Integer(Config.get("HOST_PORT")));
+		chbCamera = new JCheckBox();
 
 		btnConnect = new JButton(Translate.get("GUI_CONNECT"));
 		btnDisconnect = new JButton(Translate.get("GUI_DISCONNECT"));
-		buttons.add(btnConnect);
-		buttons.add(btnDisconnect);
 
 		pnlConnection.add(lblHost, "width 50%");
 		pnlConnection.add(txtHost, "width 50%, wrap");
 		pnlConnection.add(lblPort, "grow");
 		pnlConnection.add(txtPort, "grow, wrap 10");
+		pnlConnection.add(lblCamera, "grow");
+		pnlConnection.add(chbCamera, "grow, wrap 10");
 		pnlConnection.add(btnConnect, "grow, height 25");
 		pnlConnection.add(btnDisconnect, "grow, height 25, wrap");
 
@@ -151,20 +180,17 @@ public class ViewApp extends JFrame {
 		lblArch = new JLabel(Translate.get("GUI_ARCH"));
 		cmbArch = new JComboBox<ClassW>();
 
-		btnStarSimulation = new JButton(Translate.get("GUI_STARTSIMULATION"));
+		btnStartSimulation = new JButton(Translate.get("GUI_STARTSIMULATION"));
 		btnStopSimulation = new JButton(Translate.get("GUI_STOPSIMULATION"));
-		buttons.add(btnStarSimulation);
-		buttons.add(btnStopSimulation);
 
 		pnlSimulation.add(lblArch, "width 50%");
 		pnlSimulation.add(cmbArch, "width 50%, wrap 10");
-		pnlSimulation.add(btnStarSimulation, "grow, height 25");
+		pnlSimulation.add(btnStartSimulation, "grow, height 25");
 		pnlSimulation.add(btnStopSimulation, "grow, height 25, wrap");
 
 		pnlCam = new JImagePanel();
 		pnlCam.setLayout(new MigLayout());
-		pnlCam.setBorder(BorderFactory.createTitledBorder(Translate.get("GUI_CAM")));
-		pnlCam.setImagePath("img/logo200x200.png");
+		pnlCam.setBorder(BorderFactory.createTitledBorder(Translate.get("GUI_CAM")));		
 
 		pnlWest = new JPanel();
 		pnlWest.setLayout(new MigLayout());
@@ -230,10 +256,30 @@ public class ViewApp extends JFrame {
 		pnlSouth.setLayout(new MigLayout());
 		add(pnlSouth, BorderLayout.SOUTH);
 
-		JScrollPane scrollPanel = new JScrollPane();
-		pnlSouth.add(scrollPanel, "width 100%, height 100");
+		JScrollPane scrollPanelConsole = new JScrollPane();
+		pnlSouth.add(scrollPanelConsole, "width 100%, height 100");
 		tarConsole = new JTextArea();
-		scrollPanel.setViewportView(tarConsole);
+		DefaultCaret caret = (DefaultCaret)tarConsole.getCaret();
+		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+		scrollPanelConsole.setViewportView(tarConsole);
+
+		menuItems.add(menuItemShowConfig);
+		menuItems.add(menuItemClose);
+		menuItems.add(menuItemAbout);
+
+		sliders.add(sldMotorL);
+		sliders.add(sldMotorR);
+		sliders.add(sldMotorLR);
+
+		buttons.add(btnStartSimulation);
+		buttons.add(btnStopSimulation);
+		buttons.add(btnConnect);
+		buttons.add(btnDisconnect);
+		buttons.add(btnBackward);
+		buttons.add(btnForward);
+		buttons.add(btnRotateL);
+		buttons.add(btnRotateR);
+		buttons.add(btnStop);
 	}
 
 	public JMenuItem getMenuItemClose() {
@@ -274,6 +320,62 @@ public class ViewApp extends JFrame {
 
 	public JImagePanel getPnlCam() {
 		return pnlCam;
+	}
+
+	public JButton getBtnStartSimulation() {
+		return btnStartSimulation;
+	}
+
+	public JButton getBtnStopSimulation() {
+		return btnStopSimulation;
+	}
+
+	public JSlider getSldMotorL() {
+		return sldMotorL;
+	}
+
+	public JSlider getSldMotorR() {
+		return sldMotorR;
+	}
+
+	public JSlider getSldMotorLR() {
+		return sldMotorLR;
+	}
+
+	public JButton getBtnForward() {
+		return btnForward;
+	}
+
+	public JButton getBtnBackward() {
+		return btnBackward;
+	}
+
+	public JButton getBtnRotateL() {
+		return btnRotateL;
+	}
+
+	public JButton getBtnRotateR() {
+		return btnRotateR;
+	}
+
+	public JButton getBtnStop() {
+		return btnStop;
+	}
+
+	public JTextField getTxtMotorL() {
+		return txtMotorL;
+	}
+
+	public JTextField getTxtMotorR() {
+		return txtMotorR;
+	}
+
+	public JTextField getTxtMotorLR() {
+		return txtMotorLR;
+	}
+
+	public JCheckBox getChbCamera() {
+		return chbCamera;
 	}
 
 }
