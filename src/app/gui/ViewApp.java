@@ -37,8 +37,10 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
+import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.DefaultCaret;
@@ -94,9 +96,15 @@ public class ViewApp extends JFrame {
 	private JTextField txtMotorLR;
 	private JImagePanel pnlCam;
 
-	private JLabel lblCamera;
+	private JLabel lblCamDelay;
 
 	private JCheckBox chbCamera;
+
+	private JPanel pnlSettings;
+
+	private JSpinner spnDelay;
+
+	private JLabel lblCam;
 
 	public ViewApp() {
 		menuItems = new Vector<JMenuItem>();
@@ -155,11 +163,9 @@ public class ViewApp extends JFrame {
 
 		lblHost = new JLabel(Translate.get("GUI_HOST"));
 		lblPort = new JLabel(Translate.get("GUI_PORT"));
-		lblCamera=new JLabel(Translate.get("GUI_CAM"));
-		
+
 		txtHost = new JTextField(Config.get("HOST_SERVER"));
 		txtPort = new JIntegerField(new Integer(Config.get("HOST_PORT")));
-		chbCamera = new JCheckBox();
 
 		btnConnect = new JButton(Translate.get("GUI_CONNECT"));
 		btnDisconnect = new JButton(Translate.get("GUI_DISCONNECT"));
@@ -168,8 +174,6 @@ public class ViewApp extends JFrame {
 		pnlConnection.add(txtHost, "width 50%, wrap");
 		pnlConnection.add(lblPort, "grow");
 		pnlConnection.add(txtPort, "grow, wrap 10");
-		pnlConnection.add(lblCamera, "grow");
-		pnlConnection.add(chbCamera, "grow, wrap 10");
 		pnlConnection.add(btnConnect, "grow, height 25");
 		pnlConnection.add(btnDisconnect, "grow, height 25, wrap");
 
@@ -188,20 +192,34 @@ public class ViewApp extends JFrame {
 		pnlSimulation.add(btnStartSimulation, "grow, height 25");
 		pnlSimulation.add(btnStopSimulation, "grow, height 25, wrap");
 
-		pnlCam = new JImagePanel();
-		pnlCam.setLayout(new MigLayout());
-		pnlCam.setBorder(BorderFactory.createTitledBorder(Translate.get("GUI_CAM")));		
+		pnlSettings = new JPanel();
+		pnlSettings.setLayout(new MigLayout());
+		pnlSettings.setBorder(BorderFactory.createTitledBorder(Translate.get("GUI_SETTINGS")));
+
+		lblCamDelay = new JLabel(Translate.get("GUI_CAMDELAY"));
+		spnDelay = new JSpinner(new SpinnerNumberModel(10, 1, 1000, 1));
+		lblCam = new JLabel(Translate.get("GUI_CAM"));
+		chbCamera = new JCheckBox();
+
+		pnlSettings.add(lblCamDelay, "width 50%");
+		pnlSettings.add(spnDelay, "width 50%, wrap");
+		pnlSettings.add(lblCam, "width 50%");
+		pnlSettings.add(chbCamera, "width 50%, wrap");
 
 		pnlWest = new JPanel();
 		pnlWest.setLayout(new MigLayout());
 		add(pnlWest, BorderLayout.WEST);
 		pnlWest.add(pnlConnection, "width 200, wrap 10");
 		pnlWest.add(pnlSimulation, "width 200, wrap 10");
-		pnlWest.add(pnlCam, "width 200, height 200, wrap 10");
+		pnlWest.add(pnlSettings, "width 200, wrap 10");
 
 		pnlCenter = new JPanel();
 		pnlCenter.setLayout(new MigLayout());
 		add(pnlCenter, BorderLayout.CENTER);
+
+		pnlCam = new JImagePanel();
+		pnlCam.setLayout(new MigLayout());
+		pnlCam.setBorder(BorderFactory.createTitledBorder(Translate.get("GUI_CAM")));
 
 		pnlTeleoperation = new JPanel();
 		pnlTeleoperation.setLayout(new MigLayout());
@@ -250,7 +268,8 @@ public class ViewApp extends JFrame {
 
 		pnlTeleoperation.add(pnlMotorsTeleoperation, "height 200");
 		pnlTeleoperation.add(pnlButtonsTeleoperation, "height 200");
-		pnlCenter.add(pnlTeleoperation, "width 100%, wrap 10");
+		pnlCenter.add(pnlCam, "width 200, height 200, wrap 10");
+		pnlCenter.add(pnlTeleoperation, "grow, wrap 10");
 
 		pnlSouth = new JPanel();
 		pnlSouth.setLayout(new MigLayout());
@@ -259,7 +278,7 @@ public class ViewApp extends JFrame {
 		JScrollPane scrollPanelConsole = new JScrollPane();
 		pnlSouth.add(scrollPanelConsole, "width 100%, height 100");
 		tarConsole = new JTextArea();
-		DefaultCaret caret = (DefaultCaret)tarConsole.getCaret();
+		DefaultCaret caret = (DefaultCaret) tarConsole.getCaret();
 		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 		scrollPanelConsole.setViewportView(tarConsole);
 
@@ -376,6 +395,10 @@ public class ViewApp extends JFrame {
 
 	public JCheckBox getChbCamera() {
 		return chbCamera;
+	}
+
+	public JSpinner getSpnDelay() {
+		return spnDelay;
 	}
 
 }

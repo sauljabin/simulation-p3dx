@@ -65,6 +65,8 @@ public class Client {
 	}
 
 	public static boolean isConnect() {
+		if (vrep == null)
+			return false;
 		return vrep.simxGetConnectionId(clientId) != -1;
 	}
 

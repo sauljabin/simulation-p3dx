@@ -210,7 +210,6 @@ public class ControllerViewApp extends WindowAdapter implements ActionListener, 
 		if (!Client.connect(host, port))
 			return;
 
-		viewApp.getChbCamera().setEnabled(false);
 		viewApp.getBtnDisconnect().setEnabled(true);
 		viewApp.getBtnConnect().setEnabled(false);
 		viewApp.getTxtPort().setEnabled(false);
@@ -234,9 +233,6 @@ public class ControllerViewApp extends WindowAdapter implements ActionListener, 
 
 		robot = Client.getRobot();
 
-		if (!viewApp.getChbCamera().isSelected())
-			return;
-
 		resolution = new IntWA(0);
 		pixels = new CharWA(0);
 		robot.getCamImageStrimming(resolution, pixels);
@@ -245,6 +241,8 @@ public class ControllerViewApp extends WindowAdapter implements ActionListener, 
 			@Override
 			public void run() {
 				while (Client.isConnect()) {
+					if (!viewApp.getChbCamera().isSelected())
+						continue;
 					if (robot.getCamImageBuffer(resolution, pixels)) {
 						char[] chars = pixels.getArray();
 						int x = resolution.getArray()[0];
@@ -258,7 +256,11 @@ public class ControllerViewApp extends WindowAdapter implements ActionListener, 
 							}
 						}
 						viewApp.getPnlCam().setImage(bi);
-						viewApp.getPnlCam().repaint();
+					}
+					try {
+						Thread.sleep(((Integer) viewApp.getSpnDelay().getValue()).longValue());
+					} catch (InterruptedException e) {
+						e.printStackTrace();
 					}
 				}
 				disconnect();
@@ -269,7 +271,6 @@ public class ControllerViewApp extends WindowAdapter implements ActionListener, 
 
 	public void initState() {
 		viewApp.getPnlCam().setImagePath("img/logo200x200.png");
-		viewApp.getChbCamera().setEnabled(true);
 		viewApp.getBtnDisconnect().setEnabled(false);
 		viewApp.getBtnStopSimulation().setEnabled(false);
 		viewApp.getBtnStartSimulation().setEnabled(false);
@@ -314,7 +315,7 @@ public class ControllerViewApp extends WindowAdapter implements ActionListener, 
 		try {
 			stopSimulation();
 			stop();
-			Thread.sleep(10);
+			Thread.sleep(500);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
