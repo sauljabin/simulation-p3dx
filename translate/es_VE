@@ -35,6 +35,8 @@ GUI_ROTATER=Rotar D
 GUI_STOP=Detener
 GUI_ACTION=Acción
 GUI_CAM=Cámara
+GUI_SETTINGS=Ajustes
+GUI_CAMDELAY=Cam. Delay
 
 ERROR_NOSAVECONFIG=No se pudo actualizar el archivo de configuración
 ERROR_NOARCHINSTANCE=No se puede instanciar la arquitectura

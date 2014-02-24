@@ -49,6 +49,7 @@ public class JImagePanel extends JPanel implements Serializable {
 
 	public void setImage(Image image) {
 		this.image = image;
+		repaint();
 	}
 
 	public String getImagePath() {
