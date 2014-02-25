@@ -21,6 +21,7 @@
 
 package app.vrep;
 
+import coppelia.BoolW;
 import coppelia.CharWA;
 import coppelia.IntWA;
 
@@ -58,10 +59,58 @@ public class Robot {
 	public static final String motorLeft = "p3_leftJoint_";
 	public static final String motorRight = "p3_rightJoint_";
 	public static final String sensorVision = "Vision_sensor";
+	public static final String sensorUltrasonic0 = "p3_ultrasonicSensor_0";
+	public static final String sensorUltrasonic1 = "p3_ultrasonicSensor_1";
+	public static final String sensorUltrasonic2 = "p3_ultrasonicSensor_2";
+	public static final String sensorUltrasonic3 = "p3_ultrasonicSensor_3";
+	public static final String sensorUltrasonic4 = "p3_ultrasonicSensor_4";
+	public static final String sensorUltrasonic5 = "p3_ultrasonicSensor_5";
+	public static final String sensorUltrasonic6 = "p3_ultrasonicSensor_6";
+	public static final String sensorUltrasonic7 = "p3_ultrasonicSensor_7";
 
 	private int motorLeftId;
 	private int motorRightId;
 	private int sensorVisionId;
+	private int sensorUltrasonic0Id;
+	private int sensorUltrasonic1Id;
+	private int sensorUltrasonic2Id;
+	private int sensorUltrasonic3Id;
+	private int sensorUltrasonic4Id;
+	private int sensorUltrasonic5Id;
+	private int sensorUltrasonic6Id;
+	private int sensorUltrasonic7Id;
+
+	public int getSensorUltrasonic0Id() {
+		return sensorUltrasonic0Id;
+	}
+
+	public int getSensorUltrasonic1Id() {
+		return sensorUltrasonic1Id;
+	}
+
+	public int getSensorUltrasonic2Id() {
+		return sensorUltrasonic2Id;
+	}
+
+	public int getSensorUltrasonic3Id() {
+		return sensorUltrasonic3Id;
+	}
+
+	public int getSensorUltrasonic4Id() {
+		return sensorUltrasonic4Id;
+	}
+
+	public int getSensorUltrasonic5Id() {
+		return sensorUltrasonic5Id;
+	}
+
+	public int getSensorUltrasonic6Id() {
+		return sensorUltrasonic6Id;
+	}
+
+	public int getSensorUltrasonic7Id() {
+		return sensorUltrasonic7Id;
+	}
 
 	public int getMotorLeftId() {
 		return motorLeftId;
@@ -79,6 +128,14 @@ public class Robot {
 		motorLeftId = Client.getObject(motorLeft);
 		motorRightId = Client.getObject(motorRight);
 		sensorVisionId = Client.getObject(sensorVision);
+		sensorUltrasonic0Id = Client.getObject(sensorUltrasonic0);
+		sensorUltrasonic1Id = Client.getObject(sensorUltrasonic1);
+		sensorUltrasonic2Id = Client.getObject(sensorUltrasonic2);
+		sensorUltrasonic3Id = Client.getObject(sensorUltrasonic3);
+		sensorUltrasonic4Id = Client.getObject(sensorUltrasonic4);
+		sensorUltrasonic5Id = Client.getObject(sensorUltrasonic5);
+		sensorUltrasonic6Id = Client.getObject(sensorUltrasonic6);
+		sensorUltrasonic7Id = Client.getObject(sensorUltrasonic7);
 	}
 
 	public void setMotorLeftSpeed(float speed) {
@@ -97,11 +154,26 @@ public class Robot {
 		Client.setMotorSpeed(motorRightId, pi * speed / 10);
 	}
 
-	public boolean getCamImageStrimming(IntWA resolution, CharWA pixels) {
-		return Client.getCamImageStrimming(sensorVisionId, resolution, pixels);
+	public boolean getCamImageStreaming(IntWA resolution, CharWA pixels) {
+		return Client.getCamImageStreaming(sensorVisionId, resolution, pixels);
 	}
 
 	public boolean getCamImageBuffer(IntWA resolution, CharWA pixels) {
 		return Client.getCamImageBuffer(sensorVisionId, resolution, pixels);
 	}
+
+	public boolean getDetectionSensorUltrasonicBuffer(int id, BoolW detected) {
+		boolean operation = Client.readProximitySensorBuffer(id, detected, null, null, null);
+		if (!operation)
+			return false;
+		return detected.getValue();
+	}
+
+	public boolean getDetectionSensorUltrasonicStreaming(int id, BoolW detected) {
+		boolean operation = Client.readProximitySensorStreaming(id, detected, null, null, null);
+		if (!operation)
+			return false;
+		return detected.getValue();
+	}
+
 }

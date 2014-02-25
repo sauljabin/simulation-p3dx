@@ -21,6 +21,9 @@
 
 package simulation.architecture;
 
+import coppelia.BoolW;
+import app.vrep.Client;
+import app.vrep.Robot;
 import simulation.behavior.Avoid;
 import simulation.behavior.Move;
 import simulation.interfaces.Architecture;
@@ -30,18 +33,29 @@ public class Reactive implements Architecture {
 
 	private Behavior avoid;
 	private Behavior move;
+	private Robot robot;
+	private BoolW detectionSensorUltrasonic3;
 
 	@Override
 	public void simulate() {
-		move.simulate();
-		avoid.simulate();
+		robot.getDetectionSensorUltrasonicBuffer(robot.getSensorUltrasonic3Id(), detectionSensorUltrasonic3);
+		if (detectionSensorUltrasonic3.getValue()) {
+			avoid.simulate();
+		} else {
+			move.simulate();
+		}
 	}
 
 	@Override
 	public void init() {
+		robot = Client.getRobot();
+		detectionSensorUltrasonic3 = new BoolW(false);
+		robot.getDetectionSensorUltrasonicStreaming(robot.getSensorUltrasonic3Id(), detectionSensorUltrasonic3);
+
 		avoid = new Avoid();
+		avoid.init();
+
 		move = new Move();
 		move.init();
-		avoid.init();
 	}
 }
