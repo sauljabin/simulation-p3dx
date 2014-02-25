@@ -4,6 +4,7 @@ CONSOLE_MSGSELECTARCH=Seleccione una arquitectura
 CONSOLE_MSGSETNUMBER=Ingrese un número
 CONSOLE_MSGEXECTGUI=Ejecuta la aplicación en modo gráfico
 CONSOLE_MSGPARAMEMPTY=Correr sin parámetros ejecuta la aplicación en modo gráfico
+CONSOLE_MSGQTOEXIT=Presione "q" para salir
 
 GUI_OPTIONS=Opciones
 GUI_SHOWCONFIG=Ver Configuración
@@ -37,6 +38,7 @@ GUI_ACTION=Acción
 GUI_CAM=Cámara
 GUI_SETTINGS=Ajustes
 GUI_CAMDELAY=Cam. Delay
+GUI_SIMDELAY=Sim. Delay
 
 ERROR_NOSAVECONFIG=No se pudo actualizar el archivo de configuración
 ERROR_NOARCHINSTANCE=No se puede instanciar la arquitectura

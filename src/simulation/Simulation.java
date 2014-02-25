@@ -30,6 +30,17 @@ public class Simulation extends Thread {
 
 	private Architecture architecture;
 	private boolean stop;
+	private long delay;
+
+	public static final long STANDARD_DELAY = 50l;
+
+	public long getDelay() {
+		return delay;
+	}
+
+	public void setDelay(long delay) {
+		this.delay = delay;
+	}
 
 	public Architecture getArchitecture() {
 		return architecture;
@@ -39,15 +50,25 @@ public class Simulation extends Thread {
 		this.architecture = architecture;
 	}
 
-	public Simulation(Architecture architecture) {
+	public Simulation(long delay, Architecture architecture) {
 		this.architecture = architecture;
+		this.delay = delay;
 		stop = true;
+	}
+
+	public Simulation(Architecture architecture) {
+		this(STANDARD_DELAY, architecture);
 	}
 
 	@Override
 	public void run() {
 		while (Client.isConnect() && !stop) {
 			architecture.simulate();
+			try {
+				Thread.sleep(delay);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 		if (!Client.isConnect())
 			stopSimulation();
