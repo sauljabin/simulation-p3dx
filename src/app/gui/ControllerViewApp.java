@@ -30,6 +30,7 @@ import java.awt.image.BufferedImage;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -173,26 +174,28 @@ public class ControllerViewApp extends WindowAdapter implements ActionListener, 
 	}
 
 	public void stopSimulation() {
-		if (simulation != null) {
-			simulation.stopSimulation();
-			stop();
-			viewApp.getBtnStopSimulation().setEnabled(false);
-			viewApp.getBtnStartSimulation().setEnabled(true);
-			viewApp.getCmbArch().setEnabled(true);
+		if (simulation == null)
+			return;
 
-			viewApp.getSldMotorL().setEnabled(true);
-			viewApp.getTxtMotorL().setEnabled(true);
-			viewApp.getSldMotorR().setEnabled(true);
-			viewApp.getTxtMotorR().setEnabled(true);
-			viewApp.getSldMotorLR().setEnabled(true);
-			viewApp.getTxtMotorLR().setEnabled(true);
+		simulation.stopSimulation();
+		stop();
+		viewApp.getBtnStopSimulation().setEnabled(false);
+		viewApp.getBtnStartSimulation().setEnabled(true);
+		viewApp.getCmbArch().setEnabled(true);
 
-			viewApp.getBtnBackward().setEnabled(true);
-			viewApp.getBtnForward().setEnabled(true);
-			viewApp.getBtnRotateL().setEnabled(true);
-			viewApp.getBtnRotateR().setEnabled(true);
-			viewApp.getBtnStop().setEnabled(true);
-		}
+		viewApp.getSldMotorL().setEnabled(true);
+		viewApp.getTxtMotorL().setEnabled(true);
+		viewApp.getSldMotorR().setEnabled(true);
+		viewApp.getTxtMotorR().setEnabled(true);
+		viewApp.getSldMotorLR().setEnabled(true);
+		viewApp.getTxtMotorLR().setEnabled(true);
+
+		viewApp.getBtnBackward().setEnabled(true);
+		viewApp.getBtnForward().setEnabled(true);
+		viewApp.getBtnRotateL().setEnabled(true);
+		viewApp.getBtnRotateR().setEnabled(true);
+		viewApp.getBtnStop().setEnabled(true);
+
 	}
 
 	public void connect() {
@@ -235,18 +238,23 @@ public class ControllerViewApp extends WindowAdapter implements ActionListener, 
 
 		resolution = new IntWA(0);
 		pixels = new CharWA(0);
-		robot.getCamImageStrimming(resolution, pixels);
+		robot.getCamImageStreaming(resolution, pixels);
 
 		Thread thread = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				while (Client.isConnect()) {
+					
 					if (!viewApp.getChbCamera().isSelected())
 						continue;
+					
 					if (robot.getCamImageBuffer(resolution, pixels)) {
 						char[] chars = pixels.getArray();
 						int x = resolution.getArray()[0];
 						int y = resolution.getArray()[1];
+
+						if (x == 0 || y == 0)
+							continue;
 
 						BufferedImage bi = new BufferedImage(x, y, BufferedImage.TYPE_INT_RGB);
 						for (int i = 0; i < y; i++) {
@@ -257,11 +265,13 @@ public class ControllerViewApp extends WindowAdapter implements ActionListener, 
 						}
 						viewApp.getPnlCam().setImage(bi);
 					}
+					
 					try {
 						Thread.sleep(((Integer) viewApp.getSpnDelay().getValue()).longValue());
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
+					
 				}
 				disconnect();
 			}
@@ -270,6 +280,7 @@ public class ControllerViewApp extends WindowAdapter implements ActionListener, 
 	}
 
 	public void initState() {
+		viewApp.getSpnDelay().setModel(new SpinnerNumberModel(500, 1, 1000, 1));
 		viewApp.getPnlCam().setImagePath("img/logo200x200.png");
 		viewApp.getBtnDisconnect().setEnabled(false);
 		viewApp.getBtnStopSimulation().setEnabled(false);

@@ -40,7 +40,6 @@ import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.DefaultCaret;
@@ -197,7 +196,7 @@ public class ViewApp extends JFrame {
 		pnlSettings.setBorder(BorderFactory.createTitledBorder(Translate.get("GUI_SETTINGS")));
 
 		lblCamDelay = new JLabel(Translate.get("GUI_CAMDELAY"));
-		spnDelay = new JSpinner(new SpinnerNumberModel(10, 1, 1000, 1));
+		spnDelay = new JSpinner();
 		lblCam = new JLabel(Translate.get("GUI_CAM"));
 		chbCamera = new JCheckBox();
 

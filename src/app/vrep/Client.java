@@ -23,7 +23,9 @@ package app.vrep;
 
 import app.Log;
 import app.Translate;
+import coppelia.BoolW;
 import coppelia.CharWA;
+import coppelia.FloatWA;
 import coppelia.IntW;
 import coppelia.IntWA;
 import coppelia.remoteApi;
@@ -98,7 +100,7 @@ public class Client {
 		vrep.simxSetJointTargetVelocity(clientId, object, speed, remoteApi.simx_opmode_oneshot);
 	}
 
-	public static boolean getCamImageStrimming(int object, IntWA resolution, CharWA pixels) {
+	public static boolean getCamImageStreaming(int object, IntWA resolution, CharWA pixels) {
 		if (!isConnect())
 			return false;
 		int errorCode = vrep.simxGetVisionSensorImage(clientId, object, resolution, pixels, remoteApi.sim_object_camera_type, remoteApi.simx_opmode_streaming_split + 4000);
@@ -109,6 +111,20 @@ public class Client {
 		if (!isConnect())
 			return false;
 		int errorCode = vrep.simxGetVisionSensorImage(clientId, object, resolution, pixels, remoteApi.sim_object_camera_type, remoteApi.simx_opmode_buffer);
+		return errorCode == remoteApi.simx_error_noerror;
+	}
+
+	public static boolean readProximitySensorStreaming(int object, BoolW detectionState, FloatWA detectedPoint, IntW detectedObjectHandle, FloatWA detectedSurfaceNormalVector) {
+		if (!isConnect())
+			return false;
+		int errorCode = vrep.simxReadProximitySensor(clientId, object, detectionState, detectedPoint, detectedObjectHandle, detectedSurfaceNormalVector, remoteApi.simx_opmode_streaming_split + 4000);
+		return errorCode == remoteApi.simx_error_noerror;
+	}
+
+	public static boolean readProximitySensorBuffer(int object, BoolW detectionState, FloatWA detectedPoint, IntW detectedObjectHandle, FloatWA detectedSurfaceNormalVector) {
+		if (!isConnect())
+			return false;
+		int errorCode = vrep.simxReadProximitySensor(clientId, object, detectionState, detectedPoint, detectedObjectHandle, detectedSurfaceNormalVector, remoteApi.simx_opmode_buffer);
 		return errorCode == remoteApi.simx_error_noerror;
 	}
 
