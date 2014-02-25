@@ -16,6 +16,7 @@ import app.gui.ControllerViewApp;
 import app.util.UtilClass;
 import app.util.UtilIn;
 import app.vrep.Client;
+import app.vrep.Robot;
 import simulation.Simulation;
 import simulation.interfaces.Architecture;
 
@@ -63,11 +64,31 @@ public class Main {
 			Log.error(Main.class, Translate.get("ERROR_NOARCHINSTANCE"), e);
 			System.exit(0);
 		}
-
+		Simulation simulation=null;
 		if (Client.connect(Config.get("HOST_SERVER"), Integer.parseInt(Config.get("HOST_PORT")))) {
-			Simulation simulation = new Simulation(arch);
+			simulation = new Simulation(arch);
 			simulation.start();
+		} else {
+			System.exit(0);
 		}
+
+		String command = "";
+
+		do {
+			command = UtilIn.readString(Translate.get("CONSOLE_MSGQTOEXIT") + "\n");
+		} while (!command.equals("q"));
+
+		try {
+			simulation.stopSimulation();
+			Thread.sleep(500);
+			Client.getRobot().setMotorRightSpeed(Robot.intStop);
+			Client.getRobot().setMotorLeftSpeed(Robot.intStop);
+			Thread.sleep(500);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Client.close();
+
 	}
 
 	private static void commandHelp() {

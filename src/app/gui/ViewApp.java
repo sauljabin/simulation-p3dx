@@ -57,6 +57,7 @@ public class ViewApp extends JFrame {
 	private Vector<JMenuItem> menuItems;
 	private Vector<JButton> buttons;
 	private Vector<JSlider> sliders;
+	private Vector<JSpinner> sppiners;
 	private JMenuBar menuBar;
 	private JMenu menuOptions;
 	private JMenuItem menuItemShowConfig;
@@ -94,21 +95,19 @@ public class ViewApp extends JFrame {
 	private JTextField txtMotorR;
 	private JTextField txtMotorLR;
 	private JImagePanel pnlCam;
-
 	private JLabel lblCamDelay;
-
 	private JCheckBox chbCamera;
-
 	private JPanel pnlSettings;
-
-	private JSpinner spnDelay;
-
+	private JSpinner spnCamDelay;
 	private JLabel lblCam;
+	private JLabel lblSimDelay;
+	private JSpinner spnSimDelay;
 
 	public ViewApp() {
 		menuItems = new Vector<JMenuItem>();
 		buttons = new Vector<JButton>();
 		sliders = new Vector<JSlider>();
+		sppiners = new Vector<JSpinner>();
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		init();
 		setLocationRelativeTo(this);
@@ -129,6 +128,9 @@ public class ViewApp extends JFrame {
 		}
 		for (int i = 0; i < sliders.size(); i++) {
 			sliders.get(i).addChangeListener(controller);
+		}
+		for (int i = 0; i < sppiners.size(); i++) {
+			sppiners.get(i).addChangeListener(controller);
 		}
 		this.addWindowListener(controller);
 	}
@@ -195,13 +197,18 @@ public class ViewApp extends JFrame {
 		pnlSettings.setLayout(new MigLayout());
 		pnlSettings.setBorder(BorderFactory.createTitledBorder(Translate.get("GUI_SETTINGS")));
 
+		lblSimDelay = new JLabel(Translate.get("GUI_SIMDELAY"));
+		spnSimDelay = new JSpinner();
+
 		lblCamDelay = new JLabel(Translate.get("GUI_CAMDELAY"));
-		spnDelay = new JSpinner();
+		spnCamDelay = new JSpinner();
 		lblCam = new JLabel(Translate.get("GUI_CAM"));
 		chbCamera = new JCheckBox();
 
+		pnlSettings.add(lblSimDelay, "width 50%");
+		pnlSettings.add(spnSimDelay, "width 50%, wrap");
 		pnlSettings.add(lblCamDelay, "width 50%");
-		pnlSettings.add(spnDelay, "width 50%, wrap");
+		pnlSettings.add(spnCamDelay, "width 50%, wrap");
 		pnlSettings.add(lblCam, "width 50%");
 		pnlSettings.add(chbCamera, "width 50%, wrap");
 
@@ -298,6 +305,9 @@ public class ViewApp extends JFrame {
 		buttons.add(btnRotateL);
 		buttons.add(btnRotateR);
 		buttons.add(btnStop);
+
+		sppiners.add(spnCamDelay);
+		sppiners.add(spnSimDelay);
 	}
 
 	public JMenuItem getMenuItemClose() {
@@ -396,8 +406,12 @@ public class ViewApp extends JFrame {
 		return chbCamera;
 	}
 
-	public JSpinner getSpnDelay() {
-		return spnDelay;
+	public JSpinner getSpnCamDelay() {
+		return spnCamDelay;
+	}
+
+	public JSpinner getSpnSimDelay() {
+		return spnSimDelay;
 	}
 
 }

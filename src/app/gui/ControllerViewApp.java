@@ -168,7 +168,7 @@ public class ControllerViewApp extends WindowAdapter implements ActionListener, 
 			viewApp.getBtnRotateR().setEnabled(false);
 			viewApp.getBtnStop().setEnabled(false);
 
-			simulation = new Simulation(arch);
+			simulation = new Simulation(((Integer) viewApp.getSpnSimDelay().getValue()).longValue(), arch);
 			simulation.start();
 		}
 	}
@@ -244,10 +244,10 @@ public class ControllerViewApp extends WindowAdapter implements ActionListener, 
 			@Override
 			public void run() {
 				while (Client.isConnect()) {
-					
+
 					if (!viewApp.getChbCamera().isSelected())
 						continue;
-					
+
 					if (robot.getCamImageBuffer(resolution, pixels)) {
 						char[] chars = pixels.getArray();
 						int x = resolution.getArray()[0];
@@ -265,13 +265,13 @@ public class ControllerViewApp extends WindowAdapter implements ActionListener, 
 						}
 						viewApp.getPnlCam().setImage(bi);
 					}
-					
+
 					try {
-						Thread.sleep(((Integer) viewApp.getSpnDelay().getValue()).longValue());
+						Thread.sleep(((Integer) viewApp.getSpnCamDelay().getValue()).longValue());
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					
+
 				}
 				disconnect();
 			}
@@ -280,7 +280,8 @@ public class ControllerViewApp extends WindowAdapter implements ActionListener, 
 	}
 
 	public void initState() {
-		viewApp.getSpnDelay().setModel(new SpinnerNumberModel(500, 1, 1000, 1));
+		viewApp.getSpnCamDelay().setModel(new SpinnerNumberModel(Simulation.STANDARD_DELAY, 1, 1000, 1));
+		viewApp.getSpnSimDelay().setModel(new SpinnerNumberModel(Simulation.STANDARD_DELAY, 1, 1000, 1));
 		viewApp.getPnlCam().setImagePath("img/logo200x200.png");
 		viewApp.getBtnDisconnect().setEnabled(false);
 		viewApp.getBtnStopSimulation().setEnabled(false);
@@ -340,6 +341,14 @@ public class ControllerViewApp extends WindowAdapter implements ActionListener, 
 	}
 
 	public void close() {
+		try {
+			stopSimulation();
+			stop();
+			Thread.sleep(500);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Client.close();
 		viewApp.dispose();
 		System.exit(0);
 	}
@@ -380,6 +389,9 @@ public class ControllerViewApp extends WindowAdapter implements ActionListener, 
 			int value = viewApp.getSldMotorLR().getValue();
 			viewApp.getSldMotorR().setValue(value);
 			viewApp.getSldMotorL().setValue(value);
+		} else if (source.equals(viewApp.getSpnSimDelay())) {
+			if (simulation != null)
+				simulation.setDelay(((Integer) viewApp.getSpnSimDelay().getValue()).longValue());
 		}
 	}
 
