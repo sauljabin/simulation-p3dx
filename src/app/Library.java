@@ -23,13 +23,13 @@ package app;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Vector;
 
 public class Library {
 
 	public static void load() throws FileNotFoundException {
 
 		String path = "";
-		String extension = "";
 
 		if (Library.is32Bit())
 			path = Config.get("LIB_PATH_32");
@@ -37,20 +37,17 @@ public class Library {
 		if (Library.is64Bit())
 			path = Config.get("LIB_PATH_64");
 
-		if (Library.isLinux()) {
+		if (Library.isLinux())
 			path += Config.get("LIB_LINUX");
-			extension += ".so";
-		}
-		if (Library.isWindows()) {
-			path += Config.get("LIB_WINDOWS");
-			extension += ".dll";
-		}
 
-		File file = new File(path + extension);
+		if (Library.isWindows())
+			path += Config.get("LIB_WINDOWS");
+
+		File file = new File(path);
 		if (!file.exists())
 			throw new FileNotFoundException("Api v-rep library not found");
 
-		System.loadLibrary(path);
+		System.load(file.getAbsolutePath());
 	}
 
 	public static boolean isLinux() {
@@ -62,11 +59,28 @@ public class Library {
 	}
 
 	public static boolean is32Bit() {
-		return Config.get("OS_ARCH").toLowerCase().contains("x86");
+		Vector<String> strings = new Vector<String>();
+		strings.add("x86");
+		strings.add("i386");
+
+		for (String string : strings) {
+			if (Config.get("OS_ARCH").toLowerCase().contains(string))
+				return true;
+		}
+
+		return false;
 	}
 
 	public static boolean is64Bit() {
-		return Config.get("OS_ARCH").toLowerCase().contains("x64");
+		Vector<String> strings = new Vector<String>();
+		strings.add("x64");
+
+		for (String string : strings) {
+			if (Config.get("OS_ARCH").toLowerCase().contains(string))
+				return true;
+		}
+
+		return false;
 	}
 
 }

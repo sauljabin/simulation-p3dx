@@ -64,7 +64,7 @@ public class Main {
 			Log.error(Main.class, Translate.get("ERROR_NOARCHINSTANCE"), e);
 			System.exit(0);
 		}
-		Simulation simulation=null;
+		Simulation simulation = null;
 		if (Client.connect(Config.get("HOST_SERVER"), Integer.parseInt(Config.get("HOST_PORT")))) {
 			simulation = new Simulation(arch);
 			simulation.start();

@@ -280,8 +280,8 @@ public class ControllerViewApp extends WindowAdapter implements ActionListener, 
 	}
 
 	public void initState() {
-		viewApp.getSpnCamDelay().setModel(new SpinnerNumberModel(Simulation.STANDARD_DELAY, 1, 1000, 1));
-		viewApp.getSpnSimDelay().setModel(new SpinnerNumberModel(Simulation.STANDARD_DELAY, 1, 1000, 1));
+		viewApp.getSpnCamDelay().setModel(new SpinnerNumberModel((int) Simulation.STANDARD_DELAY, 1, 1000, 1));
+		viewApp.getSpnSimDelay().setModel(new SpinnerNumberModel((int) Simulation.STANDARD_DELAY, 1, 1000, 1));
 		viewApp.getPnlCam().setImagePath("img/logo200x200.png");
 		viewApp.getBtnDisconnect().setEnabled(false);
 		viewApp.getBtnStopSimulation().setEnabled(false);
