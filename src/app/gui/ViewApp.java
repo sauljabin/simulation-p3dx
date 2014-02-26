@@ -23,6 +23,7 @@ package app.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -255,7 +256,7 @@ public class ViewApp extends JFrame {
 		sldMotorR.setBorder(BorderFactory.createTitledBorder(null, Translate.get("GUI_MOTORR"), TitledBorder.CENTER, TitledBorder.TOP));
 
 		sldMotorLR = new JSlider(JSlider.VERTICAL);
-		sldMotorLR.setBorder(BorderFactory.createTitledBorder(null, Translate.get("GUI_MOTORLR"), TitledBorder.CENTER, TitledBorder.TOP, null, Color.BLUE));
+		sldMotorLR.setBorder(BorderFactory.createTitledBorder(null, Translate.get("GUI_MOTORLR"), TitledBorder.CENTER, TitledBorder.TOP, new Font(sldMotorLR.getFont().getName(), sldMotorLR.getFont().getStyle(), 10), Color.BLUE));
 
 		txtMotorL = new JTextField();
 		txtMotorR = new JTextField();
