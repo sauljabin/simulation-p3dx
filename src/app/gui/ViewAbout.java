@@ -27,6 +27,7 @@ import javax.swing.JPanel;
 
 import app.Config;
 import app.Translate;
+import app.util.JUrlLinkLabel;
 import net.miginfocom.swing.MigLayout;
 
 public class ViewAbout extends JDialog {

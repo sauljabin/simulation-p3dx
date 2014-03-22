@@ -19,7 +19,7 @@
  *		2014
  */
 
-package app.gui;
+package app.util;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;

@@ -134,10 +134,11 @@ public class ControllerViewApp extends WindowAdapter implements ActionListener, 
 	private void stop() {
 		viewApp.getSldMotorLR().setValue(Robot.intStop);
 		viewApp.getSldMotorR().setValue(Robot.intStop);
-		robot.setMotorRightSpeed(Robot.intStop);
-
 		viewApp.getSldMotorL().setValue(Robot.intStop);
-		robot.setMotorLeftSpeed(Robot.intStop);
+		if (robot != null) {
+			robot.setMotorRightSpeed(Robot.intStop);
+			robot.setMotorLeftSpeed(Robot.intStop);
+		}
 	}
 
 	public void startSimulation() {
