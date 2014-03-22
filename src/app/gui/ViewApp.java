@@ -48,6 +48,8 @@ import javax.swing.text.DefaultCaret;
 import app.Config;
 import app.Translate;
 import app.com.ClassW;
+import app.util.JImagePanel;
+import app.util.JIntegerField;
 import net.miginfocom.swing.MigLayout;
 
 public class ViewApp extends JFrame {
