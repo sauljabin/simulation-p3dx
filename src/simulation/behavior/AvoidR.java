@@ -21,23 +21,29 @@
 
 package simulation.behavior;
 
-import app.vrep.Client;
 import app.vrep.Robot;
-import simulation.interfaces.Behavior;
 
-public class Avoid implements Behavior {
-
-	private Robot robot;
+public class AvoidR extends Avoid {
 
 	@Override
 	public void simulate() {
-		robot.setMotorLeftSpeed(Robot.floatMeanSpeedBack);
-		robot.setMotorRightSpeed(Robot.floatMeanSpeed);
-	}
-
-	@Override
-	public void init() {
-		robot = Client.getRobot();
+		float valueLeft = 0;
+		float valueRight = 0;
+		if (speed == 1) {
+			valueLeft = Robot.floatVeryLowSpeed;
+			valueRight = Robot.floatVeryLowSpeedBack;
+		} else if (speed == 2) {
+			valueLeft = Robot.floatLowSpeed;
+			valueRight = Robot.floatLowSpeedBack;
+		} else if (speed == 3) {
+			valueLeft = Robot.floatMeanSpeed;
+			valueRight = Robot.floatMeanSpeedBack;
+		} else if (speed == 4) {
+			valueLeft = Robot.floatHighSpeed;
+			valueRight = Robot.floatHighSpeedBack;
+		}
+		robot.setMotorLeftSpeed(valueLeft);
+		robot.setMotorRightSpeed(valueRight);
 	}
 
 }
