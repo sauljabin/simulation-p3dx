@@ -60,72 +60,25 @@ public class Reactive extends Thread implements Architecture {
 				|| detectionSensorUltrasonicL1.getValue()
 				|| detectionSensorUltrasonicL2.getValue()
 				|| detectionSensorUltrasonicL3.getValue()) {
-			forwarding = false;
-			avoiding = true;
-			step = (int) (20 + (Math.random() * 50.0));
-
-			if (detectionSensorUltrasonicR0.getValue()
-					|| detectionSensorUltrasonicL0.getValue()) {
-				avoidL.setSpeed(4);
-				avoidR.setSpeed(4);
-			} else if (detectionSensorUltrasonicR1.getValue()
-					|| detectionSensorUltrasonicL1.getValue()) {
-				avoidL.setSpeed(3);
-				avoidR.setSpeed(3);
-			} else if (detectionSensorUltrasonicR2.getValue()
-					|| detectionSensorUltrasonicL2.getValue()) {
-				avoidL.setSpeed(2);
-				avoidR.setSpeed(2);
-			} else if (detectionSensorUltrasonicR3.getValue()
-					|| detectionSensorUltrasonicL3.getValue()) {
-				avoidL.setSpeed(1);
-				avoidR.setSpeed(1);
-			}
-			if (Math.random() < 0.5) {
-				if (detectionSensorUltrasonicR0.getValue()
-						|| detectionSensorUltrasonicR1.getValue()
-						|| detectionSensorUltrasonicR2.getValue()
-						|| detectionSensorUltrasonicR3.getValue()) {
-					avoidL.simulate();
-				} else if (detectionSensorUltrasonicL0.getValue()
-						|| detectionSensorUltrasonicL1.getValue()
-						|| detectionSensorUltrasonicL2.getValue()
-						|| detectionSensorUltrasonicL3.getValue()) {
-					avoidR.simulate();
-				}
-			} else {
-				if (detectionSensorUltrasonicL0.getValue()
-						|| detectionSensorUltrasonicL1.getValue()
-						|| detectionSensorUltrasonicL2.getValue()
-						|| detectionSensorUltrasonicL3.getValue()) {
-					avoidR.simulate();
-				} else if (detectionSensorUltrasonicR0.getValue()
-						|| detectionSensorUltrasonicR1.getValue()
-						|| detectionSensorUltrasonicR2.getValue()
-						|| detectionSensorUltrasonicR3.getValue()) {
-					avoidL.simulate();
-				}
-			}
 			System.out.println("GIRAR");
+			step = (int) (Math.random() * 10.0);
+			avoid();
 		} else if (avoiding || forwarding) {
 			System.out.println("SEGUIR");
-			try {
-				Thread.sleep(1);
-				step--;
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			if (step == 0) {
+			step--;
+			System.out.println(step);
+			if (step <= 0) {
 				avoiding = false;
 				forwarding = false;
 			}
 		} else {
 			avoiding = false;
 			forwarding = true;
+			step = (int) (Math.random() * 10.0);
 			move.simulate();
 			System.out.println("AVANZAR");
 		}
-
+		
 	}
 
 	@Override
@@ -134,30 +87,8 @@ public class Reactive extends Thread implements Architecture {
 		avoiding = false;
 		step = 50;
 		robot = Client.getRobot();
-		detectionSensorUltrasonicR0 = new BoolW(false);
-		detectionSensorUltrasonicR1 = new BoolW(false);
-		detectionSensorUltrasonicR2 = new BoolW(false);
-		detectionSensorUltrasonicR3 = new BoolW(false);
-		detectionSensorUltrasonicL0 = new BoolW(false);
-		detectionSensorUltrasonicL1 = new BoolW(false);
-		detectionSensorUltrasonicL2 = new BoolW(false);
-		detectionSensorUltrasonicL3 = new BoolW(false);
-		robot.getDetectionSensorUltrasonicStreaming(
-				robot.getSensorUltrasonic0Id(), detectionSensorUltrasonicR3);
-		robot.getDetectionSensorUltrasonicStreaming(
-				robot.getSensorUltrasonic1Id(), detectionSensorUltrasonicR2);
-		robot.getDetectionSensorUltrasonicStreaming(
-				robot.getSensorUltrasonic2Id(), detectionSensorUltrasonicR1);
-		robot.getDetectionSensorUltrasonicStreaming(
-				robot.getSensorUltrasonic3Id(), detectionSensorUltrasonicR0);
-		robot.getDetectionSensorUltrasonicStreaming(
-				robot.getSensorUltrasonic4Id(), detectionSensorUltrasonicL0);
-		robot.getDetectionSensorUltrasonicStreaming(
-				robot.getSensorUltrasonic5Id(), detectionSensorUltrasonicL1);
-		robot.getDetectionSensorUltrasonicStreaming(
-				robot.getSensorUltrasonic6Id(), detectionSensorUltrasonicL2);
-		robot.getDetectionSensorUltrasonicStreaming(
-				robot.getSensorUltrasonic7Id(), detectionSensorUltrasonicL3);
+		initDetectionSensorUltrasonic();
+		getDetectionSensorUltrasonicStreaming();
 
 		avoidR = new AvoidR();
 		avoidR.init();
@@ -169,8 +100,51 @@ public class Reactive extends Thread implements Architecture {
 		move.init();
 	}
 
-	void getDetectionSensorUltrasonicBuffer() {
-		System.out.println("VALORES");
+	private void avoid() {
+		forwarding = false;
+		avoiding = true;
+		int v = (int) Math.ceil(Math.random() * 4);
+		avoidL.setSpeed(v);
+		avoidR.setSpeed(v);
+		if (Math.random() < 0.5) {
+			if (detectionSensorUltrasonicR0.getValue()
+					|| detectionSensorUltrasonicR1.getValue()
+					|| detectionSensorUltrasonicR2.getValue()
+					|| detectionSensorUltrasonicR3.getValue()) {
+				avoidL.simulate();
+			} else if (detectionSensorUltrasonicL0.getValue()
+					|| detectionSensorUltrasonicL1.getValue()
+					|| detectionSensorUltrasonicL2.getValue()
+					|| detectionSensorUltrasonicL3.getValue()) {
+				avoidR.simulate();
+			}
+		} else {
+			if (detectionSensorUltrasonicL0.getValue()
+					|| detectionSensorUltrasonicL1.getValue()
+					|| detectionSensorUltrasonicL2.getValue()
+					|| detectionSensorUltrasonicL3.getValue()) {
+				avoidR.simulate();
+			} else if (detectionSensorUltrasonicR0.getValue()
+					|| detectionSensorUltrasonicR1.getValue()
+					|| detectionSensorUltrasonicR2.getValue()
+					|| detectionSensorUltrasonicR3.getValue()) {
+				avoidL.simulate();
+			}
+		}
+	}
+
+	private void initDetectionSensorUltrasonic() {
+		detectionSensorUltrasonicR0 = new BoolW(false);
+		detectionSensorUltrasonicR1 = new BoolW(false);
+		detectionSensorUltrasonicR2 = new BoolW(false);
+		detectionSensorUltrasonicR3 = new BoolW(false);
+		detectionSensorUltrasonicL0 = new BoolW(false);
+		detectionSensorUltrasonicL1 = new BoolW(false);
+		detectionSensorUltrasonicL2 = new BoolW(false);
+		detectionSensorUltrasonicL3 = new BoolW(false);
+	}
+
+	private void getDetectionSensorUltrasonicBuffer() {
 		System.out.println(robot.getDetectionSensorUltrasonicBuffer(
 				robot.getSensorUltrasonic0Id(), detectionSensorUltrasonicR3));
 		System.out.println(robot.getDetectionSensorUltrasonicBuffer(
@@ -187,5 +161,24 @@ public class Reactive extends Thread implements Architecture {
 				robot.getSensorUltrasonic6Id(), detectionSensorUltrasonicL2));
 		System.out.println(robot.getDetectionSensorUltrasonicBuffer(
 				robot.getSensorUltrasonic7Id(), detectionSensorUltrasonicL3));
+	}
+
+	private void getDetectionSensorUltrasonicStreaming() {
+		robot.getDetectionSensorUltrasonicStreaming(
+				robot.getSensorUltrasonic0Id(), detectionSensorUltrasonicR3);
+		robot.getDetectionSensorUltrasonicStreaming(
+				robot.getSensorUltrasonic1Id(), detectionSensorUltrasonicR2);
+		robot.getDetectionSensorUltrasonicStreaming(
+				robot.getSensorUltrasonic2Id(), detectionSensorUltrasonicR1);
+		robot.getDetectionSensorUltrasonicStreaming(
+				robot.getSensorUltrasonic3Id(), detectionSensorUltrasonicR0);
+		robot.getDetectionSensorUltrasonicStreaming(
+				robot.getSensorUltrasonic4Id(), detectionSensorUltrasonicL0);
+		robot.getDetectionSensorUltrasonicStreaming(
+				robot.getSensorUltrasonic5Id(), detectionSensorUltrasonicL1);
+		robot.getDetectionSensorUltrasonicStreaming(
+				robot.getSensorUltrasonic6Id(), detectionSensorUltrasonicL2);
+		robot.getDetectionSensorUltrasonicStreaming(
+				robot.getSensorUltrasonic7Id(), detectionSensorUltrasonicL3);
 	}
 }
