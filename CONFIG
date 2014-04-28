@@ -1,5 +1,5 @@
 #CONFIGURATION
-#Mon Apr 28 10:05:26 VET 2014
+#Mon Apr 28 11:07:51 VET 2014
 HOST_SERVER=127.0.0.1
 APP_LICENSE=GNU General Public License
 OS_ARCH=i386
@@ -7,12 +7,12 @@ LIB_PATH_64=lib/64Bit/
 HOST_PORT=20000
 LIB_LINUX=libremoteApiJava.so
 TRANSLATE=es_VE
-LIB_PATH_32=lib/32Bit/
 APP_AUTHOR=SAUL PIÑA, JORGE PARRA
+LIB_PATH_32=lib/32Bit/
 TRANSLATE_PATH=translate/
 LIB_PATH=lib/
 APP_NAME=SimulationP3DX
-OS=Linux
 APP_SIMULATOR=v-rep
+OS=Linux
 APP_URLSIMULATOR=http\://www.coppeliarobotics.com/
 LIB_WINDOWS=remoteApiJava.dll

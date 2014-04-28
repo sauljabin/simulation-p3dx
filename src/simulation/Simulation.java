@@ -64,6 +64,11 @@ public class Simulation extends Thread {
 	public void run() {
 		while (Client.isConnect() && !stop) {
 			architecture.simulate();
+			try {
+				Thread.sleep(delay);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 		if (!Client.isConnect())
 			stopSimulation();
@@ -71,7 +76,8 @@ public class Simulation extends Thread {
 
 	@Override
 	public synchronized void start() {
-		Log.info(Client.class, Translate.get("INFO_INITSIMULATION") + " " + architecture.getClass().getName());
+		Log.info(Client.class, Translate.get("INFO_INITSIMULATION") + " "
+				+ architecture.getClass().getName());
 		init();
 		stop = false;
 		super.start();
@@ -79,7 +85,8 @@ public class Simulation extends Thread {
 
 	public void stopSimulation() {
 		stop = true;
-		Log.info(Client.class, Translate.get("INFO_STOPSIMULATION") + " " + architecture.getClass().getName());
+		Log.info(Client.class, Translate.get("INFO_STOPSIMULATION") + " "
+				+ architecture.getClass().getName());
 	}
 
 	public boolean isRunning() {
