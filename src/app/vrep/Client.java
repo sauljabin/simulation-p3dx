@@ -73,8 +73,8 @@ public class Client {
 	}
 
 	public static void close() {
+		Log.info(Client.class, Translate.get("INFO_CLOSECONN"));
 		if (isConnect()) {
-			Log.info(Client.class, Translate.get("INFO_CLOSECONN"));
 			vrep.simxFinish(-1);
 			robot = null;
 			vrep = null;

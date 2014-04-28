@@ -28,7 +28,7 @@ import coppelia.IntWA;
 public class Robot {
 	public static final float pi = 3.1415f;
 
-	public static final float floatstop = 0f;
+	public static final float floatStop = 0f;
 
 	public static final float floatVeryLowSpeed = pi * 0.1f;
 	public static final float floatLowSpeed = pi * 0.5f;
