@@ -74,6 +74,7 @@ public class Library {
 	public static boolean is64Bit() {
 		Vector<String> strings = new Vector<String>();
 		strings.add("x64");
+		strings.add("amd64");
 
 		for (String string : strings) {
 			if (Config.get("OS_ARCH").toLowerCase().contains(string))
