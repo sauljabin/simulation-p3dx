@@ -64,11 +64,6 @@ public class Simulation extends Thread {
 	public void run() {
 		while (Client.isConnect() && !stop) {
 			architecture.simulate();
-			try {
-				Thread.sleep(delay);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 		}
 		if (!Client.isConnect())
 			stopSimulation();
