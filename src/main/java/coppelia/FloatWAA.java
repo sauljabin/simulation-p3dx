@@ -2,26 +2,32 @@
 
 package coppelia;
 
-public class FloatWAA {
+public class FloatWAA
+{
     FloatWA[] w;
 
-    public FloatWAA(int i) {
+    public FloatWAA(int i)
+    {
         w = new FloatWA[i];
     }
 
-    public void initArray(int i) {
+    public void initArray(int i)
+    {
         w = new FloatWA[i];
     }
 
-    public FloatWA[] getArray() {
+    public FloatWA[] getArray()
+    {
         return w;
     }
 
-    public int getLength() {
+    public int getLength()
+    {
         return w.length;
     }
 
-    public FloatWA[] getNewArray(int i) {
+    public FloatWA[] getNewArray(int i)
+    {
         w = new FloatWA[i];
         for (int k = 0; k < i; k++)
             w[k] = new FloatWA(1);

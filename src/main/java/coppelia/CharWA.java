@@ -2,36 +2,44 @@
 
 package coppelia;
 
-public class CharWA {
+public class CharWA
+{
     char[] w;
 
-    public CharWA(int i) {
+    public CharWA(int i)
+    {
         w = new char[i];
     }
-
-    public CharWA(String s) {
-        w = s.toCharArray();
+    
+    public CharWA(String s)
+    {
+        w=s.toCharArray();
     }
-
-    public String getString() {
+    
+    public String getString()
+    {
         String a;
         a = new String(w);
         return a;
     }
 
-    public void initArray(int i) {
+    public void initArray(int i)
+    {
         w = new char[i];
     }
 
-    public char[] getArray() {
+    public char[] getArray()
+    {
         return w;
     }
 
-    public int getLength() {
+    public int getLength()
+    {
         return w.length;
     }
 
-    public char[] getNewArray(int i) {
+    public char[] getNewArray(int i)
+    {
         w = new char[i];
         return w;
     }

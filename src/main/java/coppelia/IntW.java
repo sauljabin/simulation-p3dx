@@ -2,18 +2,22 @@
 
 package coppelia;
 
-public class IntW {
+public class IntW
+{
     int w;
 
-    public IntW(int i) {
+    public IntW(int i)
+    {
         w = i;
     }
 
-    public int getValue() {
+    public void setValue(int i)
+    {
+        w = i;
+    }
+
+    public int getValue()
+    {
         return w;
-    }
-
-    public void setValue(int i) {
-        w = i;
     }
 }

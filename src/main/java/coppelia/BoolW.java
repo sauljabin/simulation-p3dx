@@ -2,18 +2,22 @@
 
 package coppelia;
 
-public class BoolW {
+public class BoolW
+{
     boolean w;
 
-    public BoolW(boolean b) {
+    public BoolW(boolean b)
+    {
         w = b;
     }
 
-    public boolean getValue() {
+    public void setValue(boolean b)
+    {
+        w = b;
+    }
+
+    public boolean getValue()
+    {
         return w;
-    }
-
-    public void setValue(boolean b) {
-        w = b;
     }
 }

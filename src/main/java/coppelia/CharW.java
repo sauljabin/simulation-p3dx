@@ -2,18 +2,22 @@
 
 package coppelia;
 
-public class CharW {
+public class CharW
+{
     char w;
 
-    public CharW(char c) {
+    public CharW(char c)
+    {
         w = c;
     }
 
-    public char getValue() {
+    public void setValue(char c)
+    {
+        w = c;
+    }
+
+    public char getValue()
+    {
         return w;
-    }
-
-    public void setValue(char c) {
-        w = c;
     }
 }

@@ -2,26 +2,32 @@
 
 package coppelia;
 
-public class BoolWA {
+public class BoolWA
+{
     boolean w[];
 
-    public BoolWA(int i) {
+    public BoolWA(int i)
+    {
         w = new boolean[i];
     }
 
-    public void initArray(int i) {
+    public void initArray(int i)
+    {
         w = new boolean[i];
     }
 
-    public boolean[] getArray() {
+    public boolean[] getArray()
+    {
         return w;
     }
 
-    public int getLength() {
+    public int getLength()
+    {
         return w.length;
     }
 
-    public boolean[] getNewArray(int i) {
+    public boolean[] getNewArray(int i)
+    {
         w = new boolean[i];
         return w;
     }

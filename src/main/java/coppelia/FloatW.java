@@ -2,18 +2,22 @@
 
 package coppelia;
 
-public class FloatW {
+public class FloatW
+{
     float w;
 
-    public FloatW(float f) {
+    public FloatW(float f)
+    {
         w = f;
     }
 
-    public float getValue() {
-        return w;
+    public void setValue(float i)
+    {
+        w = i;
     }
 
-    public void setValue(float i) {
-        w = i;
+    public float getValue()
+    {
+        return w;
     }
 }

@@ -2,18 +2,22 @@
 
 package coppelia;
 
-public class StringW {
+public class StringW
+{
     String w;
 
-    public StringW(String s) {
+    public StringW(String s)
+    {
         w = new String(s);
     }
 
-    public String getValue() {
+    public void setValue(String s)
+    {
+        w = new String(s);
+    }
+
+    public String getValue()
+    {
         return w;
-    }
-
-    public void setValue(String s) {
-        w = new String(s);
     }
 }
