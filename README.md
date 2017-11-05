@@ -9,6 +9,7 @@ Simulación de robot Pioneer P3-DX a través del simulador VREP http://www.coppe
 - Repository: https://github.com/sauljabin/simulation-p3dx
 - License: MIT
 - Language: Java
+- Ubuntu
 
 V-REP
 -----
@@ -46,7 +47,7 @@ Iniciar Aplicación
 
 Ejecutar v-rep y abrir la escena `documents/scenes/TerrenoPrueba.ttt` e iniciar simulación.
 
-Correr aplicación con `make run`, conectar la aplicación y luego iniciar la simulación con la arquitectura deseada.
+Correr aplicación con `make run`, conectar la aplicación y luego iniciar la simulación.
 
 Screenshots
 -----------
