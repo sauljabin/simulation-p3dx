@@ -19,7 +19,7 @@ API JAVA para conectarse a v-rep: en la ruta
 `VREP_PATH/programming/remoteApiBindings/java/java/coppelia`
 se ecuentran las clases JAVA, estas se copiaron dentro del proyecto en el paquete `coppelia`.
 
-Además, se debe instalar el API, para esto crear las siguiente variables de entorno en `bashrc`, ejemplo en linux:
+Además, se debe instalar el API, para esto crear las siguientes variables de entorno en `bashrc`, ejemplo en linux:
 
 ```
 export VREP_PATH=/home/saul/Programas/v-rep
